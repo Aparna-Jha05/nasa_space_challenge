@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import { Link } from 'react-router-dom';
 import './home.css';
 import Navbar from './Navbar';
@@ -32,6 +32,14 @@ const HomePage = () => {
         },
     ];
 
+    // Scroll handler for the button
+    const scrollToRoles = () => {
+        const element = document.getElementById('roles-section');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <>
             <Navbar />
@@ -39,10 +47,12 @@ const HomePage = () => {
                 <header className="hero-section">
                     <h1>Welcome to the Knowledge Engine</h1>
                     <p>Our platform connects you with cutting-edge insights and data for space biology.</p>
-                    <button className="btn-get-started">Get Started</button>
+                    <button className="btn-get-started" onClick={scrollToRoles}>
+                        Get Started
+                    </button>
                 </header>
 
-                <section className="roles-section">
+                <section id="roles-section" className="roles-section">
                     <h2>Designed For Your Needs</h2>
                     <div className="roles-container">
                         {roles.map((role, index) => (
