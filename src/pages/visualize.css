@@ -8,8 +8,39 @@
     text-align: center;
     font-size: 0.75rem;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
 .help-box svg {
     margin-bottom: 2px;
+}
+
+.help-box:hover {
+    background-color: rgba(165, 180, 252, 0.15);
+    border-color: rgba(165, 180, 252, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 0 8px rgba(165, 180, 252, 0.4);
+}
+
+.help-box:active {
+    transform: translateY(0);
+    background-color: rgba(165, 180, 252, 0.25);
+}
+
+/* Role Buttons Styling */
+.role-btn {
+    color: #ffffff !important;   /* force white text */
+    font-weight: 500;
+    min-width: 140px;
+    transition: all 0.2s ease-in-out;
+}
+
+.role-btn.btn-outline-primary {
+    border-color: #a5b4fc;
+    color: #ffffff !important;
+}
+
+.role-btn.btn-outline-primary:hover {
+    background-color: rgba(165, 180, 252, 0.2);
+    color: #ffffff !important;
 }
