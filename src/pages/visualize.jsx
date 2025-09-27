@@ -1,11 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Chart from 'chart.js/auto';
 import './visualize.css';
 import Navbar from './Navbar';
 
 const Visualize = () => {
+    const location = useLocation();
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    // Pre-select role from Home page or default to none
+    const [selectedRole, setSelectedRole] = useState(location.state?.role || "");
 
     const researchPapers = [
         { date: "July 20, 2021", title: "Mice in Bion-M 1 space mission: training and selection" },
@@ -15,11 +22,11 @@ const Visualize = () => {
         { date: "March 29, 2024", title: "Plant growth and development in the space environment: challenges and opportunities" }
     ];
 
+    // Setup Chart.js
     useEffect(() => {
         if (chartRef.current) {
-            if (chartInstance.current) {
-                chartInstance.current.destroy();
-            }
+            if (chartInstance.current) chartInstance.current.destroy();
+
             const ctx = chartRef.current.getContext('2d');
             chartInstance.current = new Chart(ctx, {
                 type: 'bar',
@@ -36,47 +43,31 @@ const Visualize = () => {
                 options: {
                     maintainAspectRatio: false,
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: '#9ca3af' },
-                            grid: { color: 'rgba(107, 114, 128, 0.3)' }
-                        },
-                        x: {
-                            ticks: { color: '#9ca3af' },
-                            grid: { display: false }
-                        }
+                        y: { beginAtZero: true, ticks: { color: '#9ca3af' }, grid: { color: 'rgba(107, 114, 128, 0.3)' } },
+                        x: { ticks: { color: '#9ca3af' }, grid: { display: false } }
                     },
-                    plugins: {
-                        legend: {
-                           display: false
-                        }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
         }
-        
-        return () => {
-            if (chartInstance.current) {
-                chartInstance.current.destroy();
-            }
-        };
+
+        return () => { if (chartInstance.current) chartInstance.current.destroy(); };
     }, []);
 
     return (
         <>
             <Navbar />
-            <main className="container py-5 text-light" style={{paddingTop: '80px'}}>
-                
+            <main className="container py-5 text-light" style={{ paddingTop: '80px' }}>
                 {/* Page Header */}
                 <header className="text-center mb-5">
                     <h1 className="display-3 fw-bold lora-font">Dive Deeper into</h1>
                     <h1 className="display-3 fw-bold lora-font" style={{ color: '#a5b4fc' }}>Space Biology Data.</h1>
                 </header>
 
-                {/* Main Search */}
-                <div className="row justify-content-center mb-5">
+                {/* Main Search + Role Buttons */}
+                <div className="row justify-content-center mb-4">
                     <div className="col-lg-8">
-                         <div className="input-group">
+                        <div className="input-group mb-3">
                             <span className="input-group-text bg-transparent border-end-0" style={{ borderColor: 'rgba(50, 50, 50, 0.5)' }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search text-white-50" viewBox="0 0 16 16">
                                   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -84,13 +75,28 @@ const Visualize = () => {
                             </span>
                             <input type="text" className="form-control form-control-lg form-control-dark border-start-0" placeholder="Ask a question about space biology..." />
                         </div>
+
+                        {/* Role Buttons */}
+                        <div className="mt-3 d-flex justify-content-center">
+                            <div className="btn-group" role="group" aria-label="Role selection">
+                                {["Scientist", "Student", "Professional"].map((role) => (
+                                    <button
+                                        key={role}
+                                        type="button"
+                                        className={`btn ${selectedRole === role ? 'btn-primary' : 'btn-outline-primary'}`}
+                                        onClick={() => setSelectedRole(role)}
+                                    >
+                                        {role}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Grid Layout */}
+                {/* Content Grid */}
                 <div className="row g-5">
-                    
-                    {/* Left Column: Paper Directory */}
+                    {/* Left Column: Research Papers */}
                     <div className="col-lg-4">
                         <div className="card-custom p-4 h-100">
                             <h4 className="fw-bold">Research Paper Directory</h4>
@@ -109,7 +115,7 @@ const Visualize = () => {
                         </div>
                     </div>
 
-                    {/* Right Column: Main Content Area */}
+                    {/* Right Column: Document Analysis */}
                     <div className="col-lg-8">
                          <div className="card-custom p-4 h-100">
                             <h5 className="card-title text-white mb-3">DOCUMENT ANALYSIS</h5>
@@ -160,10 +166,10 @@ const Visualize = () => {
                         </div>
                     </div>
                 </div>
-                </main>
+
+            </main>
         </>
     );
-}
+};
 
 export { Visualize };
-

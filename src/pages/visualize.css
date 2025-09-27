@@ -59,3 +59,8 @@ body {
     background-color: rgba(50, 50, 50, 0.3);
     border-color: #a5b4fc;
 }
+
+/* Optional: button group min-width */
+.btn-group button {
+    min-width: 120px;
+}
